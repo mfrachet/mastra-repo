@@ -5,9 +5,25 @@ import {
   ContentSimilarityMetric,
   ToneConsistencyMetric,
 } from "@mastra/evals/nlp";
+import { PostgresStore, PgVector } from "@mastra/pg";
 import { weatherTool } from "../tools";
+import { Memory } from "@mastra/memory";
 
 const model = openai("gpt-4o");
+
+const memory = new Memory({
+  storage: new PostgresStore({
+    connectionString: process.env.NEXT_PUBLIC_DB!,
+  }),
+  vector: new PgVector(process.env.NEXT_PUBLIC_DB!),
+  options: {
+    lastMessages: 10,
+    semanticRecall: {
+      topK: 3,
+      messageRange: 2,
+    },
+  },
+});
 
 export const weatherAgent = new Agent({
   name: "Weather Agent",
@@ -30,4 +46,5 @@ export const weatherAgent = new Agent({
     contentSimilarity: new ContentSimilarityMetric(),
     tone: new ToneConsistencyMetric(),
   },
+  memory,
 });
