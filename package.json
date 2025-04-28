@@ -13,7 +13,7 @@
   "type": "module",
   "dependencies": {
     "@ai-sdk/openai": "^1.3.20",
-    "@mastra/core": "latest",
+    "@mastra/core": "^0.9.0",
     "@mastra/evals": "^0.1.19",
     "@mastra/memory": "^0.3.0",
     "@mastra/pg": "^0.3.0",
